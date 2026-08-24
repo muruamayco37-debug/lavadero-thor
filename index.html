@@ -215,70 +215,95 @@
 
   <footer>Lavadero Thor</footer>
 
-  <script>
-    const dateInput = document.getElementById('date');
-    const timeSelect = document.getElementById('time');
-    const form = document.getElementById('bookingForm');
-    const confirmation = document.getElementById('confirmation');
+  
+   <script>
+  const dateInput = document.getElementById('date');
+  const timeSelect = document.getElementById('time');
+  const form = document.getElementById('bookingForm');
+  const confirmation = document.getElementById('confirmation');
 
-    const slots = ['08:00','10:00','12:00','14:00','16:00','18:00','20:00'];
+  const slots = ['08:00','10:00','12:00','14:00','16:00','18:00','20:00'];
 
-    const today = new Date();
-    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-    dateInput.min = today.toISOString().split('T')[0];
+  const today = new Date();
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+  dateInput.min = today.toISOString().split('T')[0];
 
-    function populateTimes() {
-      timeSelect.innerHTML = '';
-      const value = dateInput.value;
-      if (!value) {
-        timeSelect.innerHTML = '<option value="">Seleccioná fecha primero</option>';
-        return;
-      }
+  function populateTimes() {
+    timeSelect.innerHTML = '';
 
-      const chosen = new Date(value + 'T12:00:00');
-      const day = chosen.getDay(); // 0 domingo
-      if (day === 0) {
-        timeSelect.innerHTML = '<option value="">Los domingos estamos cerrados</option>';
-        return;
-      }
+    const value = dateInput.value;
 
-      slots.forEach(slot => {
-        const option = document.createElement('option');
-        option.value = slot;
-        option.textContent = slot;
-        timeSelect.appendChild(option);
-      });
+    if (!value) {
+      timeSelect.innerHTML = '<option value="">Seleccioná fecha primero</option>';
+      return;
     }
 
-    dateInput.addEventListener('change', populateTimes);
+    const chosen = new Date(value + 'T12:00:00');
+    const day = chosen.getDay();
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
+    if (day === 0) {
+      timeSelect.innerHTML = '<option value="">Los domingos estamos cerrados</option>';
+      return;
+    }
 
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const vehicle = document.getElementById('vehicle').value;
-      const service = document.getElementById('service').value;
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
-
-      const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-AR', {
-        weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric'
-      });
-
-      confirmation.style.display = 'block';
-      confirmation.innerHTML = `
-        <strong style="color:#ffd21a">Turno preparado</strong><br>
-        Cliente: ${name}<br>
-        Teléfono: ${phone}<br>
-        Vehículo: ${vehicle}<br>
-        Servicio: ${service}<br>
-        Fecha: ${formattedDate}<br>
-        Horario: ${time}
-        <br><br>
-        <small>Este prototipo muestra la reserva en pantalla. Para que los turnos queden guardados y puedan administrarse desde cualquier dispositivo, hace falta conectar una base de datos.</small>
-      `;
+    slots.forEach(slot => {
+      const option = document.createElement('option');
+      option.value = slot;
+      option.textContent = slot;
+      timeSelect.appendChild(option);
     });
-  </script>
+  }
+
+  dateInput.addEventListener('change', populateTimes);
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const vehicle = document.getElementById('vehicle').value;
+    const service = document.getElementById('service').value;
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+
+    const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-AR', {
+      weekday: 'long',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+
+    const message = `🚗 NUEVO TURNO - LAVADERO THOR
+
+👤 Cliente: ${name}
+📱 Teléfono: ${phone}
+🚘 Vehículo: ${vehicle}
+🧼 Servicio: ${service}
+📅 Fecha: ${formattedDate}
+⏰ Horario: ${time}
+
+Hola, quiero confirmar este turno.`;
+
+    const whatsappNumber = '5493537515162';
+
+    const whatsappURL =
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappURL, '_blank');
+
+    confirmation.style.display = 'block';
+
+    confirmation.innerHTML = `
+      <strong style="color:#ffd21a">Turno preparado para WhatsApp</strong><br><br>
+      Cliente: ${name}<br>
+      Teléfono: ${phone}<br>
+      Vehículo: ${vehicle}<br>
+      Servicio: ${service}<br>
+      Fecha: ${formattedDate}<br>
+      Horario: ${time}
+    `;
+  });
+</script>
+  
 </body>
 </html>
