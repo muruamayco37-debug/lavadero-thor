@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lavadero Thor | Turnos</title>
+  <style>
+    :root {
+      --yellow: #ffd21a;
+      --black: #080808;
+      --panel: #121212;
+      --border: #292929;
+      --muted: #bdbdbd;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--black);
+      color: #fff;
+    }
+    header {
+      text-align: center;
+      padding: 42px 20px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 {
+      margin: 0;
+      color: var(--yellow);
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    header p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    main {
+      width: min(1100px, 92%);
+      margin: 35px auto 60px;
+    }
+    .intro {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .intro h2 {
+      color: var(--yellow);
+      margin-bottom: 8px;
+    }
+    .intro p { color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .card h3 {
+      margin-top: 0;
+      color: var(--yellow);
+      font-size: 1.35rem;
+    }
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: 700;
+    }
+    input, select {
+      width: 100%;
+      padding: 13px;
+      border-radius: 8px;
+      border: 1px solid #3b3b3b;
+      background: #090909;
+      color: #fff;
+      font-size: 1rem;
+    }
+    input:focus, select:focus {
+      outline: 2px solid var(--yellow);
+      border-color: var(--yellow);
+    }
+    .service-list {
+      display: grid;
+      gap: 10px;
+    }
+    .service {
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #0d0d0d;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+    .service strong { color: var(--yellow); white-space: nowrap; }
+    .availability {
+      margin-top: 20px;
+      padding: 14px;
+      border-left: 3px solid var(--yellow);
+      background: #0d0d0d;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--yellow);
+      color: #000;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover { filter: brightness(1.08); }
+    #confirmation {
+      display: none;
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 10px;
+      border: 1px solid var(--yellow);
+      color: #fff;
+      background: #161616;
+      line-height: 1.6;
+    }
+    footer {
+      text-align: center;
+      color: #777;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 800px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Lavadero Thor</h1>
+    <p>Turnos digitales · Lunes a sábado · 08:00 a 20:30</p>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Reservá tu turno</h2>
+      <p>Los turnos se asignan cada 2 horas. El tiempo real puede variar según la suciedad de la unidad.</p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h3>Servicios</h3>
+        <div class="service-list">
+          <div class="service"><span>Auto · Lavado común</span><strong>$18.000</strong></div>
+          <div class="service"><span>Auto · Lavado Full Premium</span><strong>$25.000</strong></div>
+          <div class="service"><span>Auto · Interior completo (asientos, piso y tablero)</span><strong>$35.000</strong></div>
+          <div class="service"><span>Chatas 4x4 · Lavado</span><strong>$35.000</strong></div>
+          <div class="service"><span>Chata 4x4 · Full Premium + interior completo</span><strong>$50.000</strong></div>
+          <div class="service"><span>Moto · Lavado común</span><strong>$8.000</strong></div>
+          <div class="service"><span>Moto · Lavado Full Premium</span><strong>$12.000</strong></div>
+        </div>
+        <div class="availability">
+          <strong>Horario:</strong> lunes a sábado, de 08:00 a 20:30.<br>
+          <strong>Duración:</strong> aproximadamente 1 h 45 min; se reserva cada 2 horas para dar margen según el estado de la unidad.
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Datos del turno</h3>
+        <form id="bookingForm">
+          <label for="name">Nombre</label>
+          <input id="name" required placeholder="Tu nombre">
+
+          <label for="phone">Teléfono</label>
+          <input id="phone" required type="tel" placeholder="Tu teléfono">
+
+          <label for="vehicle">Vehículo</label>
+          <select id="vehicle" required>
+            <option value="">Seleccioná</option>
+            <option>Auto</option>
+            <option>Chata 4x4</option>
+            <option>Moto</option>
+          </select>
+
+          <label for="service">Servicio</label>
+          <select id="service" required>
+            <option value="">Seleccioná un servicio</option>
+            <option value="Auto - Lavado común | $18.000">Auto - Lavado común | $18.000</option>
+            <option value="Auto - Lavado Full Premium | $25.000">Auto - Lavado Full Premium | $25.000</option>
+            <option value="Auto - Interior completo | $35.000">Auto - Interior completo | $35.000</option>
+            <option value="Chata 4x4 - Lavado | $35.000">Chata 4x4 - Lavado | $35.000</option>
+            <option value="Chata 4x4 - Full Premium + interior completo | $50.000">Chata 4x4 - Full Premium + interior completo | $50.000</option>
+            <option value="Moto - Lavado común | $8.000">Moto - Lavado común | $8.000</option>
+            <option value="Moto - Lavado Full Premium | $12.000">Moto - Lavado Full Premium | $12.000</option>
+          </select>
+
+          <label for="date">Fecha</label>
+          <input id="date" type="date" required>
+
+          <label for="time">Horario</label>
+          <select id="time" required>
+            <option value="">Seleccioná fecha primero</option>
+          </select>
+
+          <button type="submit">CONFIRMAR TURNO</button>
+        </form>
+        <div id="confirmation"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer>Lavadero Thor</footer>
+
+  <script>
+    const dateInput = document.getElementById('date');
+    const timeSelect = document.getElementById('time');
+    const form = document.getElementById('bookingForm');
+    const confirmation = document.getElementById('confirmation');
+
+    const slots = ['08:00','10:00','12:00','14:00','16:00','18:00','20:00'];
+
+    const today = new Date();
+    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+    dateInput.min = today.toISOString().split('T')[0];
+
+    function populateTimes() {
+      timeSelect.innerHTML = '';
+      const value = dateInput.value;
+      if (!value) {
+        timeSelect.innerHTML = '<option value="">Seleccioná fecha primero</option>';
+        return;
+      }
+
+      const chosen = new Date(value + 'T12:00:00');
+      const day = chosen.getDay(); // 0 domingo
+      if (day === 0) {
+        timeSelect.innerHTML = '<option value="">Los domingos estamos cerrados</option>';
+        return;
+      }
+
+      slots.forEach(slot => {
+        const option = document.createElement('option');
+        option.value = slot;
+        option.textContent = slot;
+        timeSelect.appendChild(option);
+      });
+    }
+
+    dateInput.addEventListener('change', populateTimes);
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const vehicle = document.getElementById('vehicle').value;
+      const service = document.getElementById('service').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+
+      const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-AR', {
+        weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric'
+      });
+
+      confirmation.style.display = 'block';
+      confirmation.innerHTML = `
+        <strong style="color:#ffd21a">Turno preparado</strong><br>
+        Cliente: ${name}<br>
+        Teléfono: ${phone}<br>
+        Vehículo: ${vehicle}<br>
+        Servicio: ${service}<br>
+        Fecha: ${formattedDate}<br>
+        Horario: ${time}
+        <br><br>
+        <small>Este prototipo muestra la reserva en pantalla. Para que los turnos queden guardados y puedan administrarse desde cualquier dispositivo, hace falta conectar una base de datos.</small>
+      `;
+    });
+  </script>
+</body>
+</html>
